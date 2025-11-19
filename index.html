@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FestChain — Dark Demo</title>
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+
+<style>
+/* ---------------- DARK THEME ---------------- */
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --primary: #58a6ff;
+  --success: #3fb950;
+  --radius: 10px;
+}
+
+body {
+  font-family: Inter, "Segoe UI", sans-serif;
+  background: var(--bg);
+  margin: 0;
+  color: var(--text);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  background: var(--primary);
+  color: black;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  box-shadow: 0 0 18px rgba(88,166,255,0.4);
+}
+
+h1 {
+  margin: 0;
+}
+
+small {
+  color: var(--muted);
+}
+
+/* Panels */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: var(--radius);
+  margin-top: 18px;
+}
+
+/* Inputs */
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  background: #0b0f14;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+}
+
+input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* Buttons */
+button {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: black;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-alt {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+/* Cards */
+.eventCard {
+  background: var(--panel);
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Status Text */
+.status {
+  margin-top: 10px;
+  color: var(--success);
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: var(--muted);
+  font-size: 14px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="logo">FC</div>
+    <h1>FestChain — Dark Theme</h1>
+  </header>
+
+  <small>Ganache RPC → http://127.0.0.1:7545</small>
+
+  <div class="panel">
+    <h3>Admin — Create Event</h3>
+    <label>Title</label>
+    <input id="evTitle" placeholder="Rock Night">
+
+    <label>Date</label>
+    <input id="evDate" placeholder="Nov 25, 6pm">
+
+    <label>Capacity</label>
+    <input id="evCap" type="number" placeholder="50">
+
+    <button id="createBtn" class="btn-primary" style="margin-top:14px;">Create Event</button>
+
+    <div id="adminStatus" class="status"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Events</h3>
+    <div id="eventsList">Loading events…</div>
+  </div>
+
+  <div class="panel">
+    <h3>Demo Controls</h3>
+    <label>Active account index</label>
+    <input id="acctIndex" type="number" value="0">
+
+    <button id="setAcctBtn" class="btn-alt" style="margin-top:14px;">Set Active Account</button>
+    <div id="demoStatus" class="status"></div>
+  </div>
+
+  <footer>
+    FestChain 2.0 Dark Edition — designed for clean classroom demos
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+// Bind UI to js
+document.getElementById('createBtn').addEventListener('click', async () => {
+  const t = evTitle.value || "Demo Event";
+  const d = evDate.value || "TBD";
+  const c = parseInt(evCap.value) || 50;
+
+  adminStatus.innerText = "Creating event...";
+  await createEvent(t, d, c);
+  adminStatus.innerText = "Event created!";
+});
+
+document.getElementById('setAcctBtn').addEventListener('click', () => {
+  const idx = parseInt(acctIndex.value);
+  setActiveAccount(idx);
+  demoStatus.innerText = "Active account set to " + idx;
+});
+</script>
+
+</body>
+</html>
